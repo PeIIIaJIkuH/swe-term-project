@@ -12,6 +12,8 @@ import org.springframework.security.core.userdetails.UserDetails;
 import com.hotel.models.User;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
+import javax.validation.constraints.Size;
+
 public class UserDetailsImpl implements UserDetails {
 	private static final long serialVersionUID = 1L;
 
@@ -26,14 +28,40 @@ public class UserDetailsImpl implements UserDetails {
 
 	private Collection<? extends GrantedAuthority> authorities;
 
+	private String homePhoneNumber;
+	private String mobilePhoneNumber;
+	private String country;
+	private String city;
+	private String street;
+	private String idType;
+	private Long idNumber;
+
 	public UserDetailsImpl(Long id, String username, String email, String password,
-			Collection<? extends GrantedAuthority> authorities) {
+						   Collection<? extends GrantedAuthority> authorities, String homePhoneNumber,
+						   String mobilePhoneNumber, String country, String city, String street,
+						   String idType, Long idNumber) {
 		this.id = id;
 		this.username = username;
 		this.email = email;
 		this.password = password;
 		this.authorities = authorities;
+		this.homePhoneNumber = homePhoneNumber;
+		this.mobilePhoneNumber = mobilePhoneNumber;
+		this.country = country;
+		this.city = city;
+		this.street = street;
+		this.idType = idType;
+		this.idNumber = idNumber;
 	}
+
+//	public UserDetailsImpl(Long id, String username, String email, String password,
+//						   Collection<? extends GrantedAuthority> authorities) {
+//		this.id = id;
+//		this.username = username;
+//		this.email = email;
+//		this.password = password;
+//		this.authorities = authorities;
+//	}
 
 	public static UserDetailsImpl build(User user) {
 		List<GrantedAuthority> authorities = user.getRoles().stream()
@@ -45,7 +73,14 @@ public class UserDetailsImpl implements UserDetails {
 				user.getUsername(), 
 				user.getEmail(),
 				user.getPassword(), 
-				authorities);
+				authorities,
+				user.getHomePhoneNumber(),
+				user.getMobilePhoneNumber(),
+				user.getCountry(),
+				user.getCity(),
+				user.getStreet(),
+				user.getIdType(),
+				user.getIdNumber());
 	}
 
 	@Override
@@ -99,5 +134,61 @@ public class UserDetailsImpl implements UserDetails {
 			return false;
 		UserDetailsImpl user = (UserDetailsImpl) o;
 		return Objects.equals(id, user.id);
+	}
+
+	public String getHomePhoneNumber() {
+		return homePhoneNumber;
+	}
+
+	public void setHomePhoneNumber(String homePhoneNumber) {
+		this.homePhoneNumber = homePhoneNumber;
+	}
+
+	public String getMobilePhoneNumber() {
+		return mobilePhoneNumber;
+	}
+
+	public void setMobilePhoneNumber(String mobilePhoneNumber) {
+		this.mobilePhoneNumber = mobilePhoneNumber;
+	}
+
+	public String getCountry() {
+		return country;
+	}
+
+	public void setCountry(String country) {
+		this.country = country;
+	}
+
+	public String getCity() {
+		return city;
+	}
+
+	public void setCity(String city) {
+		this.city = city;
+	}
+
+	public String getStreet() {
+		return street;
+	}
+
+	public void setStreet(String street) {
+		this.street = street;
+	}
+
+	public String getIdType() {
+		return idType;
+	}
+
+	public void setIdType(String idType) {
+		this.idType = idType;
+	}
+
+	public Long getIdNumber() {
+		return idNumber;
+	}
+
+	public void setIdNumber(Long idNumber) {
+		this.idNumber = idNumber;
 	}
 }
