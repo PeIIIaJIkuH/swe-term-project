@@ -1,26 +1,25 @@
 package com.hotel.security.services;
 
-import com.hotel.models.User;
-import com.hotel.repository.UserRepository;
+import com.hotel.models.Employee;
+import com.hotel.models.Guest;
+import com.hotel.repository.EmployeeRepository;
+import com.hotel.repository.GuestRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
-import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-@Service
-public class UserDetailsServiceImpl implements UserDetailsService {
+public class EmployeeDetailsServiceImpl implements UserDetailsService {
     @Autowired
-    UserRepository userRepository;
+    EmployeeRepository employeeRepository;
 
     @Override
     @Transactional
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-        User user = userRepository.findByUsername(username)
-                .orElseThrow(() -> new UsernameNotFoundException("User Not Found with username: " + username));
+        Employee employee = employeeRepository.findByUsername(username)
+                .orElseThrow(() -> new UsernameNotFoundException("Employee Not Found with username: " + username));
 
-        return UserDetailsImpl.build(user);
+        return UserDetailsImpl.build(employee);
     }
-
 }

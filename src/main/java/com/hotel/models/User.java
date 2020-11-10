@@ -13,6 +13,7 @@ import java.util.Set;
                 @UniqueConstraint(columnNames = "username"),
                 @UniqueConstraint(columnNames = "email")
         })
+@Inheritance(strategy = InheritanceType.JOINED)
 public class User {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -31,11 +32,13 @@ public class User {
     @Size(max = 120)
     private String password;
 
-    @ManyToMany(fetch = FetchType.LAZY)
-    @JoinTable(name = "user_role",
-            joinColumns = @JoinColumn(name = "user_id"),
-            inverseJoinColumns = @JoinColumn(name = "role_id"))
-    private Set<Role> roles = new HashSet<>();
+    @NotBlank
+    @Size(max = 50)
+    private String firstName;
+
+    @NotBlank
+    @Size(max = 50)
+    private String lastName;
 
     @Size(max = 12)
     private String homePhoneNumber;
@@ -60,19 +63,16 @@ public class User {
     public User() {
     }
 
-//    public User(String username, String email, String password) {
-//        this.username = username;
-//        this.email = email;
-//        this.password = password;
-//    }
-
     public User(@NotBlank @Size(max = 20) String username, @NotBlank @Size(max = 50) @Email String email,
-                @NotBlank @Size(max = 120) String password, @Size(max = 12) String homePhoneNumber,
+                @NotBlank @Size(max = 120) String password, @NotBlank @Size(max = 50) String firstName,
+                @NotBlank @Size(max = 50) String lastName, @Size(max = 12) String homePhoneNumber,
                 @Size(max = 12) String mobilePhoneNumber, @Size(max = 50) String country, @Size(max = 50) String city,
                 @Size(max = 50) String street, @Size(max = 25) String idType, Long idNumber) {
         this.username = username;
         this.email = email;
         this.password = password;
+        this.firstName = firstName;
+        this.lastName = lastName;
         this.homePhoneNumber = homePhoneNumber;
         this.mobilePhoneNumber = mobilePhoneNumber;
         this.country = country;
@@ -112,14 +112,6 @@ public class User {
 
     public void setPassword(String password) {
         this.password = password;
-    }
-
-    public Set<Role> getRoles() {
-        return roles;
-    }
-
-    public void setRoles(Set<Role> roles) {
-        this.roles = roles;
     }
 
     public String getHomePhoneNumber() {
@@ -176,5 +168,21 @@ public class User {
 
     public void setIdNumber(Long idNumber) {
         this.idNumber = idNumber;
+    }
+
+    public String getFirstName() {
+        return firstName;
+    }
+
+    public void setFirstName(String firstName) {
+        this.firstName = firstName;
+    }
+
+    public String getLastName() {
+        return lastName;
+    }
+
+    public void setLastName(String lastName) {
+        this.lastName = lastName;
     }
 }
