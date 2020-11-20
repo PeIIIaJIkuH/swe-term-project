@@ -5,15 +5,25 @@ import java.util.List;
 
 public class HotelResponse {
 	private Long id;
+
 	private String name;
+
 	private String country;
+
 	private String city;
+
 	private String street;
+
 	private List<String> features = new ArrayList<>();
+
 	private List<String> numbers = new ArrayList<>();
+
 	private List<Long> seasonIds = new ArrayList<>();
+
 	private List<Long> roomIds = new ArrayList<>();
+
 	private List<Long> roomTypeIds = new ArrayList<>();
+
 
 	public HotelResponse(Long id, String name, String country, String city, String street) {
 		this.id = id;

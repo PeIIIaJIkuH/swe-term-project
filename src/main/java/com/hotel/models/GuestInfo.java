@@ -1,27 +1,21 @@
 package com.hotel.models;
 
 import javax.persistence.Embeddable;
-import javax.validation.constraints.Size;
 
 @Embeddable
 public class GuestInfo {
-	@Size(max = 50)
 	private String firstName;
 
-	@Size(max = 50)
 	private String lastName;
 
 	private String homePhoneNumber;
 
 	private String mobilePhoneNumber;
 
-	@Size(max = 50)
 	private String country;
 
-	@Size(max = 50)
 	private String city;
 
-	@Size(max = 50)
 	private String street;
 
 	private String idType;
@@ -31,9 +25,8 @@ public class GuestInfo {
 	public GuestInfo() {
 	}
 
-	public GuestInfo(@Size(max = 50) String firstName, @Size(max = 50) String lastName, String homePhoneNumber,
-	                 String mobilePhoneNumber, @Size(max = 50) String country, @Size(max = 50) String city,
-	                 @Size(max = 50) String street, String idType, Long idNumber) {
+	public GuestInfo(String firstName, String lastName, String homePhoneNumber, String mobilePhoneNumber,
+	                 String country, String city, String street, String idType, Long idNumber) {
 		this.firstName = firstName;
 		this.lastName = lastName;
 		this.homePhoneNumber = homePhoneNumber;

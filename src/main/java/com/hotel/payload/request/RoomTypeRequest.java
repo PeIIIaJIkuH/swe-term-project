@@ -1,73 +1,81 @@
 package com.hotel.payload.request;
 
-import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import java.util.HashSet;
 import java.util.Set;
 
 public class RoomTypeRequest {
-    @NotBlank
-    private String name;
+	@NotNull
+	private String name;
 
-    @NotNull
-    private Integer size;
+	@NotNull
+	private Integer size;
 
-    @NotNull
-    private Integer capacity;
+	@NotNull
+	private Integer capacity;
 
-    @NotNull
-    private Integer price;
+	@NotNull
+	private Integer price;
 
-    @NotNull
-    private Set<RoomRequest> rooms = new HashSet<>();
+	private Long hotelId;
 
-    private Set<RoomTypeFeatureRequest> features = new HashSet<>();
+	private Set<RoomRequest> rooms = new HashSet<>();
 
-    public String getName() {
-        return name;
-    }
+	private Set<RoomTypeFeatureRequest> features = new HashSet<>();
 
-    public void setName(String name) {
-        this.name = name;
-    }
+	public String getName() {
+		return name;
+	}
 
-    public Integer getSize() {
-        return size;
-    }
+	public void setName(String name) {
+		this.name = name;
+	}
 
-    public void setSize(Integer size) {
-        this.size = size;
-    }
+	public Integer getSize() {
+		return size;
+	}
 
-    public Integer getCapacity() {
-        return capacity;
-    }
+	public void setSize(Integer size) {
+		this.size = size;
+	}
 
-    public void setCapacity(Integer capacity) {
-        this.capacity = capacity;
-    }
+	public Integer getCapacity() {
+		return capacity;
+	}
 
-    public Integer getPrice() {
-        return price;
-    }
+	public void setCapacity(Integer capacity) {
+		this.capacity = capacity;
+	}
 
-    public void setPrice(Integer price) {
-        this.price = price;
-    }
+	public Integer getPrice() {
+		return price;
+	}
 
-    public Set<RoomTypeFeatureRequest> getFeatures() {
-        return features;
-    }
+	public void setPrice(Integer price) {
+		this.price = price;
+	}
 
-    public void setFeatures(Set<RoomTypeFeatureRequest> features) {
-        this.features = features;
-    }
+	public Set<RoomTypeFeatureRequest> getFeatures() {
+		return features;
+	}
 
-    public Set<RoomRequest> getRooms() {
-        return rooms;
-    }
+	public void setFeatures(Set<RoomTypeFeatureRequest> features) {
+		this.features = features;
+	}
 
-    public void setRooms(Set<RoomRequest> rooms) {
-        this.rooms = rooms;
-    }
+	public Set<RoomRequest> getRooms() {
+		return rooms;
+	}
+
+	public void setRooms(Set<RoomRequest> rooms) {
+		this.rooms = rooms;
+	}
+
+	public Long getHotelId() {
+		return hotelId;
+	}
+
+	public void setHotelId(Long hotelId) {
+		this.hotelId = hotelId;
+	}
 }

@@ -4,14 +4,23 @@ import java.sql.Date;
 
 public class ReservationResponse {
 	private Long id;
+
 	private Date start;
+
 	private Date end;
+
 	private Boolean isAccepted;
+
 	private String reason;
+
 	private Long hotelId;
+
 	private Long guestId;
+
 	private Long roomTypeId;
+
 	private Long receptionistId;
+
 
 	public ReservationResponse(Long id, Date start, Date end, Boolean isAccepted, String reason, Long hotelId,
 	                           Long guestId, Long roomTypeId) {
@@ -23,7 +32,6 @@ public class ReservationResponse {
 		this.hotelId = hotelId;
 		this.guestId = guestId;
 		this.roomTypeId = roomTypeId;
-		this.receptionistId = receptionistId;
 	}
 
 	public Long getId() {

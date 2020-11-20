@@ -68,7 +68,7 @@ public class OccupationController {
 					.body(new MessageResponse("Error: Occupation is not found!"));
 		}
 		Occupation occupation = occupationRepository.findById(id).get();
-		return ResponseEntity.ok(occupation);
+		return ResponseEntity.ok(toResponse(occupation));
 	}
 
 	@PostMapping
@@ -81,6 +81,14 @@ public class OccupationController {
 			return ResponseEntity.badRequest()
 					.body(new MessageResponse("Error: Room is not found!"));
 		}
+		if (!employeeRepository.existsById(request.getReceptionistId())) {
+			return ResponseEntity.badRequest()
+					.body(new MessageResponse("Error: Receptionist is not found!"));
+		}
+		if (request.getGuestInfo() == null && request.getGuestUsername() == null) {
+			return ResponseEntity.badRequest()
+					.body(new MessageResponse("Error: One of GuestInfo and GuestUsername must be filled!"));
+		}
 		String username = request.getGuestUsername();
 		if (username != null) {
 			if (!guestRepository.existsByUsername(username)) {
@@ -88,27 +96,28 @@ public class OccupationController {
 						.body(new MessageResponse("Error: Username is not found!"));
 			}
 		}
-		if (!employeeRepository.existsById(request.getReceptionistId())) {
-			return ResponseEntity.badRequest()
-					.body(new MessageResponse("Error: Employee is not found!"));
-		}
 		Hotel hotel = hotelRepository.findById(request.getHotelId()).get();
 		Room room = roomRepository.findById(request.getRoomId()).get();
 		if (!room.getEmpty()) {
 			return ResponseEntity.badRequest()
 					.body(new MessageResponse("Error: Room is not empty!"));
 		}
+		if (!room.getClear()) {
+			return ResponseEntity.badRequest()
+					.body(new MessageResponse("Error: Room is not clean!"));
+		}
 		room.setEmpty(false);
 		Timestamp now = new Timestamp(System.currentTimeMillis());
-		Guest guest = null;
-		if (username != null)
-			guest = guestRepository.findByUsername(username).get();
 		Employee receptionist = employeeRepository.findById(request.getReceptionistId()).get();
 		Occupation occupation = new Occupation(now);
 		occupation.setHotel(hotel);
 		occupation.setRoom(room);
 		occupation.setReceptionist(receptionist);
+		if (request.getEnd() != null) {
+			occupation.setEnd(request.getEnd());
+		}
 		if (username != null) {
+			Guest guest = guestRepository.findByUsername(username).get();
 			occupation.setGuest(guest);
 		} else {
 			GuestInfo info = new GuestInfo(request.getGuestInfo().getFirstName(),
@@ -122,7 +131,6 @@ public class OccupationController {
 					request.getGuestInfo().getIdNumber());
 			occupation.setGuestInfo(info);
 		}
-		room.setEmpty(false);
 		roomRepository.save(room);
 		occupationRepository.save(occupation);
 		return ResponseEntity.ok(new MessageResponse("Occupation created successfully!"));
@@ -144,12 +152,23 @@ public class OccupationController {
 		LocalDate start = new Date(occupation.getStart().getTime()).toLocalDate();
 		LocalDate end = new Date(now.getTime()).toLocalDate();
 		for (LocalDate date = start; date.isBefore(end.plusDays(1)); date = date.plusDays(1)) {
+			Float priceFactor = 0F;
+			for(Season season : occupation.getHotel().getSeasons()) {
+				if (occupation.getStart().after(season.getStart()) && occupation.getEnd().before(season.getEnd())) {
+					if (season.getPriceFactor() > priceFactor) {
+						priceFactor = season.getPriceFactor();;
+					}
+				}
+			}
+			if (priceFactor == 0F) {
+				priceFactor = 1F;
+			}
 			DayOfWeek day = date.getDayOfWeek();
 			RoomType roomType = occupation.getRoom().getType();
 			if (day == DayOfWeek.SATURDAY || day == DayOfWeek.SUNDAY) {
-				occupation.setPayment(occupation.getPayment() + roomType.getPrice() * 1.2F);
+				occupation.setPayment(occupation.getPayment() + roomType.getPrice() * 1.1F * priceFactor);
 			} else {
-				occupation.setPayment(occupation.getPayment() + roomType.getPrice());
+				occupation.setPayment(occupation.getPayment() + roomType.getPrice() * priceFactor);
 			}
 		}
 		Integer discount = 0;
@@ -158,9 +177,8 @@ public class OccupationController {
 				discount = type.getDiscount();
 			}
 		}
-		if (discount != 0) {
-			occupation.setPayment(occupation.getPayment() * (100 - discount) / 100);
-		}
+		System.out.println(discount);
+		occupation.setPayment(occupation.getPayment() * (100 - discount) / 100);
 		occupation.getRoom().setClear(false);
 		occupation.getRoom().setEmpty(true);
 		occupationRepository.save(occupation);

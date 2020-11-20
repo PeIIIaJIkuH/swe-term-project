@@ -1,16 +1,15 @@
 package com.hotel.payload.request;
 
-import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.Size;
+import javax.validation.constraints.NotNull;
 
 public class HotelPhoneNumberRequest {
-    @NotBlank
+    @NotNull
     private String number;
 
     public HotelPhoneNumberRequest() {
     }
 
-    public HotelPhoneNumberRequest(@NotBlank @Size(max = 12) String number) {
+    public HotelPhoneNumberRequest(@NotNull String number) {
         this.number = number;
     }
 

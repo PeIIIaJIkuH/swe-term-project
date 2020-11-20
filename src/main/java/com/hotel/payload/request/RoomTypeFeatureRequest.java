@@ -1,28 +1,27 @@
 package com.hotel.payload.request;
 
-import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 
 public class RoomTypeFeatureRequest {
-    @NotBlank
-    private String name;
+	@NotNull
+	private String name;
 
-    @NotNull
-    private Integer price;
+	@NotNull
+	private Integer price;
 
-    public String getName() {
-        return name;
-    }
+	public String getName() {
+		return name;
+	}
 
-    public void setName(String name) {
-        this.name = name;
-    }
+	public void setName(String name) {
+		this.name = name;
+	}
 
-    public Integer getPrice() {
-        return price;
-    }
+	public Integer getPrice() {
+		return price;
+	}
 
-    public void setPrice(Integer price) {
-        this.price = price;
-    }
+	public void setPrice(Integer price) {
+		this.price = price;
+	}
 }

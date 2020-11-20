@@ -2,7 +2,7 @@ package com.hotel.models;
 
 import javax.persistence.*;
 import javax.validation.constraints.Email;
-import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import java.util.HashSet;
 import java.util.Set;
@@ -20,12 +20,12 @@ public class Guest extends User {
 	public Guest() {
 	}
 
-	public Guest(@NotBlank @Size(max = 20) String username, @NotBlank @Size(max = 50) @Email String email,
-	             @NotBlank @Size(max = 120) String password, @NotBlank @Size(max = 50) String firstName,
-	             @NotBlank @Size(max = 50) String lastName, @Size(max = 12) String homePhoneNumber,
-	             @Size(max = 12) String mobilePhoneNumber, @Size(max = 50) String country, @Size(max = 50) String city,
-	             @Size(max = 50) String street, @Size(max = 25) String idType, Long idNumber) {
-		super(username, email, password, firstName, lastName, homePhoneNumber, mobilePhoneNumber, country, city, street, idType, idNumber);
+	public Guest(@NotNull @Size(max = 20) String username, @NotNull @Size(max = 50) @Email String email,
+	             @NotNull @Size(max = 120) String password, @NotNull String firstName, @NotNull String lastName,
+	             String homePhoneNumber, String mobilePhoneNumber, @NotNull String country, @NotNull String city,
+	             @NotNull String street, @NotNull String idType, @NotNull Long idNumber) {
+		super(username, email, password, firstName, lastName, homePhoneNumber, mobilePhoneNumber, country, city,
+				street, idType, idNumber);
 	}
 
 	public Set<Type> getTypes() {

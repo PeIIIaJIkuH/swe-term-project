@@ -1,144 +1,136 @@
 package com.hotel.payload.request;
 
 import javax.validation.constraints.Email;
-import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
 public class RegisterRequest {
-    @NotBlank
-    @Size(min = 3, max = 20)
-    private String username;
+	@NotNull
+	@Size(min = 3, max = 20)
+	private String username;
 
-    @NotBlank
-    @Size(max = 50)
-    @Email
-    private String email;
+	@NotNull
+	@Size(max = 50)
+	@Email
+	private String email;
 
-    @NotBlank
-    @Size(min = 6, max = 40)
-    private String password;
+	@NotNull
+	@Size(min = 6, max = 40)
+	private String password;
 
-    @NotBlank
-    @Size(max = 50)
-    private String firstName;
+	@NotNull
+	private String firstName;
 
-    @NotBlank
-    @Size(max = 50)
-    private String lastName;
+	@NotNull
+	private String lastName;
 
-    @Size(max = 12)
-    private String homePhoneNumber;
+	private String homePhoneNumber;
 
-    @Size(max = 12)
-    private String mobilePhoneNumber;
+	private String mobilePhoneNumber;
 
-    @Size(max = 50)
-    private String country;
+	private String country;
 
-    @Size(max = 50)
-    private String city;
+	private String city;
 
-    @Size(max = 50)
-    private String street;
+	private String street;
 
-    @Size(max = 25)
-    private String idType;
+	private String idType;
 
-    private Long idNumber;
+	private Long idNumber;
 
-    public String getUsername() {
-        return username;
-    }
+	public String getUsername() {
+		return username;
+	}
 
-    public void setUsername(String username) {
-        this.username = username;
-    }
+	public void setUsername(String username) {
+		this.username = username;
+	}
 
-    public String getEmail() {
-        return email;
-    }
+	public String getEmail() {
+		return email;
+	}
 
-    public void setEmail(String email) {
-        this.email = email;
-    }
+	public void setEmail(String email) {
+		this.email = email;
+	}
 
-    public String getPassword() {
-        return password;
-    }
+	public String getPassword() {
+		return password;
+	}
 
-    public void setPassword(String password) {
-        this.password = password;
-    }
+	public void setPassword(String password) {
+		this.password = password;
+	}
 
-    public String getFirstName() {
-        return firstName;
-    }
+	public String getFirstName() {
+		return firstName;
+	}
 
-    public void setFirstName(String firstName) {
-        this.firstName = firstName;
-    }
+	public void setFirstName(String firstName) {
+		this.firstName = firstName;
+	}
 
-    public String getLastName() {
-        return lastName;
-    }
+	public String getLastName() {
+		return lastName;
+	}
 
-    public void setLastName(String lastName) {
-        this.lastName = lastName;
-    }
+	public void setLastName(String lastName) {
+		this.lastName = lastName;
+	}
 
-    public String getHomePhoneNumber() {
-        return homePhoneNumber;
-    }
+	public String getHomePhoneNumber() {
+		return homePhoneNumber;
+	}
 
-    public void setHomePhoneNumber(String homePhoneNumber) {
-        this.homePhoneNumber = homePhoneNumber;
-    }
+	public void setHomePhoneNumber(String homePhoneNumber) {
+		this.homePhoneNumber = homePhoneNumber;
+	}
 
-    public String getMobilePhoneNumber() {
-        return mobilePhoneNumber;
-    }
+	public String getMobilePhoneNumber() {
+		return mobilePhoneNumber;
+	}
 
-    public void setMobilePhoneNumber(String mobilePhoneNumber) {
-        this.mobilePhoneNumber = mobilePhoneNumber;
-    }
+	public void setMobilePhoneNumber(String mobilePhoneNumber) {
+		this.mobilePhoneNumber = mobilePhoneNumber;
+	}
 
-    public String getCountry() {
-        return country;
-    }
+	public String getCountry() {
+		return country;
+	}
 
-    public void setCountry(String country) {
-        this.country = country;
-    }
+	public void setCountry(String country) {
+		this.country = country;
+	}
 
-    public String getCity() {
-        return city;
-    }
+	public String getCity() {
+		return city;
+	}
 
-    public void setCity(String city) {
-        this.city = city;
-    }
+	public void setCity(String city) {
+		this.city = city;
+	}
 
-    public String getStreet() {
-        return street;
-    }
+	public String getStreet() {
+		return street;
+	}
 
-    public void setStreet(String street) {
-        this.street = street;
-    }
+	public void setStreet(String street) {
+		this.street = street;
+	}
 
-    public String getIdType() {
-        return idType;
-    }
+	public String getIdType() {
+		return idType;
+	}
 
-    public void setIdType(String idType) {
-        this.idType = idType;
-    }
+	public void setIdType(String idType) {
+		this.idType = idType;
+	}
 
-    public Long getIdNumber() {
-        return idNumber;
-    }
+	public Long getIdNumber() {
+		return idNumber;
+	}
 
-    public void setIdNumber(Long idNumber) {
-        this.idNumber = idNumber;
-    }
+	public void setIdNumber(Long idNumber) {
+		this.idNumber = idNumber;
+	}
 }

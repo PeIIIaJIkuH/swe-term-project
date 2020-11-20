@@ -31,129 +31,129 @@ import java.util.stream.Collectors;
 @RestController
 @RequestMapping("/api/guest/")
 public class GuestAuthController {
-    @Autowired
-    AuthenticationManager authenticationManager;
+	@Autowired
+	AuthenticationManager authenticationManager;
 
-    @Autowired
-    GuestRepository guestRepository;
+	@Autowired
+	GuestRepository guestRepository;
 
-    @Autowired
-    TypeRepository typeRepository;
+	@Autowired
+	TypeRepository typeRepository;
 
-    @Autowired
-    PasswordEncoder encoder;
+	@Autowired
+	PasswordEncoder encoder;
 
-    @Autowired
-    JwtUtils jwtUtils;
+	@Autowired
+	JwtUtils jwtUtils;
 
-    @PostMapping("/login")
-    public ResponseEntity<?> authenticateUser(@Valid @RequestBody LoginRequest request) {
+	@PostMapping("/login")
+	public ResponseEntity<?> authenticateUser(@Valid @RequestBody LoginRequest request) {
 
-        Authentication authentication = authenticationManager.authenticate(
-                new UsernamePasswordAuthenticationToken(request.getUsername(), request.getPassword()));
+		Authentication authentication = authenticationManager.authenticate(
+				new UsernamePasswordAuthenticationToken(request.getUsername(), request.getPassword()));
 
-        SecurityContextHolder.getContext().setAuthentication(authentication);
-        String jwt = jwtUtils.generateJwtToken(authentication);
+		SecurityContextHolder.getContext().setAuthentication(authentication);
+		String jwt = jwtUtils.generateJwtToken(authentication);
 
-        UserDetailsImpl guestDetails = (UserDetailsImpl) authentication.getPrincipal();
-        List<String> types = guestDetails.getAuthorities().stream()
-                .map(GrantedAuthority::getAuthority)
-                .collect(Collectors.toList());
+		UserDetailsImpl guestDetails = (UserDetailsImpl) authentication.getPrincipal();
+		List<String> types = guestDetails.getAuthorities().stream()
+				.map(GrantedAuthority::getAuthority)
+				.collect(Collectors.toList());
 
-        return ResponseEntity.ok(new GuestJwtResponse(jwt,
-                guestDetails.getId(),
-                guestDetails.getUsername(),
-                guestDetails.getEmail(),
-                guestDetails.getFirstName(),
-                guestDetails.getLastName(),
-                guestDetails.getHomePhoneNumber(),
-                guestDetails.getMobilePhoneNumber(),
-                guestDetails.getCountry(),
-                guestDetails.getCity(),
-                guestDetails.getStreet(),
-                guestDetails.getIdType(),
-                guestDetails.getIdNumber(),
-                types));
-    }
+		return ResponseEntity.ok(new GuestJwtResponse(jwt,
+				guestDetails.getId(),
+				guestDetails.getUsername(),
+				guestDetails.getEmail(),
+				guestDetails.getFirstName(),
+				guestDetails.getLastName(),
+				guestDetails.getHomePhoneNumber(),
+				guestDetails.getMobilePhoneNumber(),
+				guestDetails.getCountry(),
+				guestDetails.getCity(),
+				guestDetails.getStreet(),
+				guestDetails.getIdType(),
+				guestDetails.getIdNumber(),
+				types));
+	}
 
-    @PostMapping("/register")
-    public ResponseEntity<?> registerGuest(@Valid @RequestBody GuestRegisterRequest request) {
-        if (guestRepository.existsByUsername(request.getUsername())) {
-            return ResponseEntity
-                    .badRequest()
-                    .body(new MessageResponse("Error: Username is already taken!"));
-        }
+	@PostMapping("/register")
+	public ResponseEntity<?> registerGuest(@Valid @RequestBody GuestRegisterRequest request) {
+		if (guestRepository.existsByUsername(request.getUsername())) {
+			return ResponseEntity
+					.badRequest()
+					.body(new MessageResponse("Error: Username is already taken!"));
+		}
 
-        if (guestRepository.existsByEmail(request.getEmail())) {
-            return ResponseEntity
-                    .badRequest()
-                    .body(new MessageResponse("Error: Email is already in use!"));
-        }
+		if (guestRepository.existsByEmail(request.getEmail())) {
+			return ResponseEntity
+					.badRequest()
+					.body(new MessageResponse("Error: Email is already in use!"));
+		}
 
-        Guest guest = new Guest(request.getUsername(),
-                request.getEmail(),
-                encoder.encode(request.getPassword()),
-                request.getFirstName(),
-                request.getLastName(),
-                request.getHomePhoneNumber(),
-                request.getMobilePhoneNumber(),
-                request.getCountry(),
-                request.getCity(),
-                request.getStreet(),
-                request.getIdType(),
-                request.getIdNumber());
+		Guest guest = new Guest(request.getUsername(),
+				request.getEmail(),
+				encoder.encode(request.getPassword()),
+				request.getFirstName(),
+				request.getLastName(),
+				request.getHomePhoneNumber(),
+				request.getMobilePhoneNumber(),
+				request.getCountry(),
+				request.getCity(),
+				request.getStreet(),
+				request.getIdType(),
+				request.getIdNumber());
 
-        Set<String> strTypes = request.getTypes();
-        Set<Type> types = new HashSet<>();
+		Set<String> strTypes = request.getTypes();
+		Set<Type> types = new HashSet<>();
 
-        if (strTypes == null) {
-            Type guestType = typeRepository.findByName(EType.TYPE_GUEST)
-                    .orElseThrow(() -> new RuntimeException("Error: Type is not found."));
-            types.add(guestType);
-        } else {
-            strTypes.forEach(type -> {
-                switch (type) {
-                    case "bronze":
-                        Type bronzeType = typeRepository.findByName(EType.TYPE_BRONZE)
-                                .orElseThrow(() -> new RuntimeException("Error: Type is not found."));
-                        types.add(bronzeType);
-                        break;
-                    case "silver":
-                        Type silverType = typeRepository.findByName(EType.TYPE_SILVER)
-                                .orElseThrow(() -> new RuntimeException("Error: Type is not found."));
-                        types.add(silverType);
-                        break;
-                    case "gold":
-                        Type goldType = typeRepository.findByName(EType.TYPE_GOLD)
-                                .orElseThrow(() -> new RuntimeException("Error: Type is not found."));
-                        types.add(goldType);
-                        break;
-                    case "vip":
-                        Type vipType = typeRepository.findByName(EType.TYPE_VIP)
-                                .orElseThrow(() -> new RuntimeException("Error: Type is not found."));
-                        types.add(vipType);
-                        break;
-                    case "military":
-                        Type militaryType = typeRepository.findByName(EType.TYPE_MILITARY)
-                                .orElseThrow(() -> new RuntimeException("Error: Type is not found."));
-                        types.add(militaryType);
-                        break;
-                    case "government":
-                        Type governmentType = typeRepository.findByName(EType.TYPE_GOVERNMENT)
-                                .orElseThrow(() -> new RuntimeException("Error: Type is not found."));
-                        types.add(governmentType);
-                        break;
-                    default:
-                        Type guestType = typeRepository.findByName(EType.TYPE_GUEST)
-                                .orElseThrow(() -> new RuntimeException("Error: Type is not found."));
-                        types.add(guestType);
-                }
-            });
-        }
+		if (strTypes == null) {
+			Type guestType = typeRepository.findByName(EType.TYPE_GUEST)
+					.orElseThrow(() -> new RuntimeException("Error: Type is not found."));
+			types.add(guestType);
+		} else {
+			strTypes.forEach(type -> {
+				switch (type) {
+					case "bronze":
+						Type bronzeType = typeRepository.findByName(EType.TYPE_BRONZE)
+								.orElseThrow(() -> new RuntimeException("Error: Type is not found."));
+						types.add(bronzeType);
+						break;
+					case "silver":
+						Type silverType = typeRepository.findByName(EType.TYPE_SILVER)
+								.orElseThrow(() -> new RuntimeException("Error: Type is not found."));
+						types.add(silverType);
+						break;
+					case "gold":
+						Type goldType = typeRepository.findByName(EType.TYPE_GOLD)
+								.orElseThrow(() -> new RuntimeException("Error: Type is not found."));
+						types.add(goldType);
+						break;
+					case "vip":
+						Type vipType = typeRepository.findByName(EType.TYPE_VIP)
+								.orElseThrow(() -> new RuntimeException("Error: Type is not found."));
+						types.add(vipType);
+						break;
+					case "military":
+						Type militaryType = typeRepository.findByName(EType.TYPE_MILITARY)
+								.orElseThrow(() -> new RuntimeException("Error: Type is not found."));
+						types.add(militaryType);
+						break;
+					case "government":
+						Type governmentType = typeRepository.findByName(EType.TYPE_GOVERNMENT)
+								.orElseThrow(() -> new RuntimeException("Error: Type is not found."));
+						types.add(governmentType);
+						break;
+					default:
+						Type guestType = typeRepository.findByName(EType.TYPE_GUEST)
+								.orElseThrow(() -> new RuntimeException("Error: Type is not found."));
+						types.add(guestType);
+				}
+			});
+		}
 
-        guest.setTypes(types);
-        guestRepository.save(guest);
+		guest.setTypes(types);
+		guestRepository.save(guest);
 
-        return ResponseEntity.ok(new MessageResponse("Guest registered successfully!"));
-    }
+		return ResponseEntity.ok(new MessageResponse("Guest registered successfully!"));
+	}
 }

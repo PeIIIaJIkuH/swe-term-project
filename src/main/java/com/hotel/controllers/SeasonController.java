@@ -43,6 +43,14 @@ public class SeasonController {
 			return ResponseEntity.badRequest()
 					.body(new MessageResponse("Error: Name is already taken!"));
 		}
+		if (!request.getStart().before(request.getEnd())) {
+			return ResponseEntity.badRequest()
+					.body(new MessageResponse("Error: Incorrect dates!"));
+		}
+		if (request.getPriceFactor() <= 0) {
+			return ResponseEntity.badRequest()
+					.body(new MessageResponse("Error: Incorrect price factor!"));
+		}
 		Season season = new Season(request.getName(),
 				request.getStart(),
 				request.getEnd(),
@@ -60,10 +68,10 @@ public class SeasonController {
 		Season season = seasonRepository.findById(id).get();
 		for (Hotel hotel : hotelRepository.findAll()) {
 			for (Season hotelSeason : hotel.getSeasons()) {
-                if (hotelSeason.getName().equals(season.getName())) {
-                    return ResponseEntity.badRequest()
-                    .body(new MessageResponse("Error: Season is linked with other hotels!"));
-                }
+				if (hotelSeason.getName().equals(season.getName())) {
+					return ResponseEntity.badRequest()
+							.body(new MessageResponse("Error: Season is linked with other hotels!"));
+				}
 			}
 		}
 		seasonRepository.deleteById(id);
@@ -75,6 +83,14 @@ public class SeasonController {
 		if (!seasonRepository.existsById(id)) {
 			return ResponseEntity.badRequest()
 					.body(new MessageResponse("Error: Season is not found!"));
+		}
+		if (!request.getStart().before(request.getEnd())) {
+			return ResponseEntity.badRequest()
+					.body(new MessageResponse("Error: Incorrect dates!"));
+		}
+		if (request.getPriceFactor() <= 0) {
+			return ResponseEntity.badRequest()
+					.body(new MessageResponse("Error: Incorrect price factor!"));
 		}
 		Season season = seasonRepository.findById(id).get();
 		season.setName(request.getName());

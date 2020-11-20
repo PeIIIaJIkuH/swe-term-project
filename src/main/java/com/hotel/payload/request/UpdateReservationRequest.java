@@ -13,6 +13,9 @@ public class UpdateReservationRequest {
 	@NotNull
 	private Long roomTypeId;
 
+	@NotNull
+	private Long guestId;
+
 	public Date getStart() {
 		return start;
 	}
@@ -35,5 +38,13 @@ public class UpdateReservationRequest {
 
 	public void setRoomTypeId(Long roomTypeId) {
 		this.roomTypeId = roomTypeId;
+	}
+
+	public Long getGuestId() {
+		return guestId;
+	}
+
+	public void setGuestId(Long guestId) {
+		this.guestId = guestId;
 	}
 }

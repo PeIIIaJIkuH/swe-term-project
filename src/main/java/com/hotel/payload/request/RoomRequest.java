@@ -3,24 +3,45 @@ package com.hotel.payload.request;
 import javax.validation.constraints.NotNull;
 
 public class RoomRequest {
-    @NotNull
-    private Integer number;
-    @NotNull
-    private Integer floor;
+	@NotNull
+	private Integer number;
 
-    public Integer getNumber() {
-        return number;
-    }
+	@NotNull
+	private Integer floor;
 
-    public void setNumber(Integer number) {
-        this.number = number;
-    }
+	private Long hotelId;
 
-    public Integer getFloor() {
-        return floor;
-    }
+	private Long roomTypeId;
 
-    public void setFloor(Integer floor) {
-        this.floor = floor;
-    }
+	public Integer getNumber() {
+		return number;
+	}
+
+	public void setNumber(Integer number) {
+		this.number = number;
+	}
+
+	public Integer getFloor() {
+		return floor;
+	}
+
+	public void setFloor(Integer floor) {
+		this.floor = floor;
+	}
+
+	public Long getHotelId() {
+		return hotelId;
+	}
+
+	public void setHotelId(Long hotelId) {
+		this.hotelId = hotelId;
+	}
+
+	public Long getRoomTypeId() {
+		return roomTypeId;
+	}
+
+	public void setRoomTypeId(Long roomTypeId) {
+		this.roomTypeId = roomTypeId;
+	}
 }

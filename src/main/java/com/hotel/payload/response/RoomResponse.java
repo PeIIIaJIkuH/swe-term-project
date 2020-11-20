@@ -2,11 +2,17 @@ package com.hotel.payload.response;
 
 public class RoomResponse {
 	private Long id;
+
 	private Integer number;
+
 	private Integer floor;
+
 	private Long typeId;
+
 	private Boolean isEmpty;
+
 	private Boolean isClear;
+
 
 	public RoomResponse(Long id, Integer number, Integer floor, Long typeId, Boolean isEmpty, Boolean isClear) {
 		this.id = id;

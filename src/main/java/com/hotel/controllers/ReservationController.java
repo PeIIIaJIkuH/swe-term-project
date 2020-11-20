@@ -1,7 +1,5 @@
 package com.hotel.controllers;
 
-import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
 import com.hotel.models.*;
 import com.hotel.models.relations.Reservation;
 import com.hotel.payload.request.ReceptionistUpdateReservationRequest;
@@ -97,8 +95,32 @@ public class ReservationController {
 					.body(new MessageResponse("Error: Incorrect dates!"));
 		}
 		Hotel hotel = hotelRepository.findById(request.getHotelId()).get();
-		Guest guest = guestRepository.findById(request.getGuestId()).get();
+		Integer roomCount = 0;
+		for (Room room : hotel.getRooms()) {
+			RoomType roomType = roomTypeRepository.findById(request.getRoomTypeId()).get();
+			if (room.getType().getId() == roomType.getId()) {
+				roomCount++;
+			}
+		}
 		RoomType roomType = roomTypeRepository.findById(request.getRoomTypeId()).get();
+		Integer blockedRoomCount = 0;
+		for (Reservation reservationFromDb : reservationRepository.findAll()) {
+			if (reservationFromDb.getHotel().getId() == hotel.getId()) {
+				if (roomType.getId() == reservationFromDb.getRoomType().getId()) {
+					if (!((request.getStart().after(reservationFromDb.getStart()) &&
+							request.getStart().after(reservationFromDb.getEnd())) ||
+							(request.getEnd().before(reservationFromDb.getStart())) &&
+									request.getEnd().before(reservationFromDb.getEnd()))) {
+						blockedRoomCount++;
+					}
+				}
+			}
+		}
+		if (roomCount - blockedRoomCount <= 0) {
+			return ResponseEntity.badRequest()
+					.body(new MessageResponse("Error: No available rooms!"));
+		}
+		Guest guest = guestRepository.findById(request.getGuestId()).get();
 		Reservation reservation = new Reservation(request.getStart(), request.getEnd(), hotel, guest, roomType);
 		reservationRepository.save(reservation);
 		return ResponseEntity.ok(new MessageResponse("Reservation created successfully!"));
@@ -112,7 +134,7 @@ public class ReservationController {
 		}
 		Reservation reservation = reservationRepository.findById(id).get();
 		Timestamp now = new Timestamp(System.currentTimeMillis());
-		if (!(now.after(reservation.getStart()) && now.after(reservation.getEnd()))) {
+		if (reservation.getStart().before(now) || reservation.getEnd().before(now)) {
 			return ResponseEntity.badRequest()
 					.body(new MessageResponse("Error: Can not delete past reservations!"));
 		}
@@ -137,31 +159,62 @@ public class ReservationController {
 			return ResponseEntity.badRequest()
 					.body(new MessageResponse("Error: Reservation can no longer be changed by receptionist!"));
 		}
+		Employee receptionist = employeeRepository.findById(request.getReceptionistId()).get();
+		Integer roomCount = 0;
+		Hotel hotel = hotelRepository.findById(receptionist.getHotel().getId()).get();
+		for (Room room : hotel.getRooms()) {
+			if (room.getType().getName().equals(reservation.getRoomType().getName())) {
+				roomCount++;
+			}
+		}
+		Integer blockedRoomCount = 0;
+		for (Reservation reservationFromDb : reservationRepository.findAll()) {
+			if (reservation.getId() != reservationFromDb.getId()) {
+				if (reservationFromDb.getHotel().getId() == hotel.getId()) {
+					if (reservation.getRoomType().getId() == reservationFromDb.getRoomType().getId()) {
+						if (!((reservation.getStart().after(reservationFromDb.getStart()) &&
+								reservation.getStart().after(reservationFromDb.getEnd())) ||
+								(reservation.getEnd().before(reservationFromDb.getStart())) &&
+										reservation.getEnd().before(reservationFromDb.getEnd()))) {
+							blockedRoomCount++;
+						}
+					}
+				}
+			}
+		}
+		if (blockedRoomCount >= roomCount) {
+			return ResponseEntity.badRequest()
+					.body(new MessageResponse("Error: RoomTypes are already taken!"));
+		}
 		reservation.setAccepted(request.getAccepted());
 		if (request.getReason() != null) {
 			reservation.setReason(request.getReason());
 		}
-		Employee receptionist = employeeRepository.findById(request.getReceptionistId()).get();
 		reservation.setReceptionist(receptionist);
 		reservationRepository.save(reservation);
 		return ResponseEntity.ok(new MessageResponse("Reservation updated successfully!"));
 	}
 
 	@PutMapping("/{id}")
-	public ResponseEntity<?> updateReservation(@PathVariable Long id, @Valid @RequestBody UpdateReservationRequest request) {
+	public ResponseEntity<?> updateReservation(@PathVariable Long id,
+	                                           @Valid @RequestBody UpdateReservationRequest request) {
 		if (!reservationRepository.existsById(id)) {
 			return ResponseEntity.badRequest()
 					.body(new MessageResponse("Error: Reservation is not found!"));
 		}
-		Date date = new Date(System.currentTimeMillis());
-		if (!(request.getStart().after(date) && request.getEnd().after(date) &&
-				request.getStart().before(request.getEnd()))) {
-			return ResponseEntity.badRequest()
-					.body(new MessageResponse("Error: Incorrect dates!"));
-		}
 		if (!roomTypeRepository.existsById(request.getRoomTypeId())) {
 			return ResponseEntity.badRequest()
 					.body(new MessageResponse("Error: RoomType is not found!"));
+		}
+		if (!guestRepository.existsById(request.getGuestId())) {
+			return ResponseEntity.badRequest()
+					.body(new MessageResponse("Error: Guest is not found!"));
+		}
+		Date now = new Date(System.currentTimeMillis());
+		if (!(request.getStart().after(now) && request.getEnd().after(now) &&
+				request.getStart().before(request.getEnd()))) {
+			return ResponseEntity.badRequest()
+					.body(new MessageResponse("Error: You can update only future reservations!"));
 		}
 		Reservation reservation = reservationRepository.findById(id).get();
 		reservation.setStart(request.getStart());

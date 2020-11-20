@@ -6,7 +6,7 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 public interface SeasonRepository extends JpaRepository<Season, Long> {
-    boolean existsByName(String name);
+	boolean existsByName(String name);
 
-    Season findByName(String season);
+	Season findByName(String season);
 }

@@ -1,8 +1,10 @@
 package com.hotel.payload.request;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import com.hotel.models.GuestInfo;
 
 import javax.validation.constraints.NotNull;
+import java.sql.Timestamp;
 
 public class OccupationRequest {
 	@NotNull
@@ -13,6 +15,9 @@ public class OccupationRequest {
 
 	@NotNull
 	private Long receptionistId;
+
+	@JsonFormat(pattern = "dd.MM.yyyy[ hh:MM:ss]")
+	private Timestamp end;
 
 	private GuestInfo guestInfo;
 
@@ -56,5 +61,13 @@ public class OccupationRequest {
 
 	public void setGuestUsername(String guestUsername) {
 		this.guestUsername = guestUsername;
+	}
+
+	public Timestamp getEnd() {
+		return end;
+	}
+
+	public void setEnd(Timestamp end) {
+		this.end = end;
 	}
 }

@@ -9,5 +9,5 @@ import java.util.Optional;
 
 @Repository
 public interface TypeRepository extends JpaRepository<Type, Long> {
-    Optional<Type> findByName(EType name);
+	Optional<Type> findByName(EType name);
 }

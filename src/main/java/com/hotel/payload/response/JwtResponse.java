@@ -1,150 +1,162 @@
 package com.hotel.payload.response;
 
-import java.util.List;
-
 public class JwtResponse {
-    private String token;
-    private String type = "Bearer";
-    private Long id;
-    private String username;
-    private String email;
-    private String firstName;
-    private String lastName;
-    private String homePhoneNumber;
-    private String mobilePhoneNumber;
-    private String country;
-    private String city;
-    private String street;
-    private String idType;
-    private Long idNumber;
+	private String token;
 
-    public JwtResponse(String token, Long id, String username, String email, String firstName,
-                       String lastName, String homePhoneNumber, String mobilePhoneNumber, String country, String city,
-                       String street, String idType, Long idNumber) {
-        this.token = token;
-        this.id = id;
-        this.username = username;
-        this.email = email;
-        this.firstName = firstName;
-        this.lastName = lastName;
-        this.homePhoneNumber = homePhoneNumber;
-        this.mobilePhoneNumber = mobilePhoneNumber;
-        this.country = country;
-        this.city = city;
-        this.street = street;
-        this.idType = idType;
-        this.idNumber = idNumber;
-    }
+	private String type = "Bearer";
 
-    public String getToken() {
-        return token;
-    }
+	private Long id;
 
-    public void setToken(String token) {
-        this.token = token;
-    }
+	private String username;
 
-    public String getType() {
-        return type;
-    }
+	private String email;
 
-    public void setType(String type) {
-        this.type = type;
-    }
+	private String firstName;
 
-    public Long getId() {
-        return id;
-    }
+	private String lastName;
 
-    public void setId(Long id) {
-        this.id = id;
-    }
+	private String homePhoneNumber;
 
-    public String getUsername() {
-        return username;
-    }
+	private String mobilePhoneNumber;
 
-    public void setUsername(String username) {
-        this.username = username;
-    }
+	private String country;
 
-    public String getEmail() {
-        return email;
-    }
+	private String city;
 
-    public void setEmail(String email) {
-        this.email = email;
-    }
+	private String street;
 
-    public String getFirstName() {
-        return firstName;
-    }
+	private String idType;
 
-    public void setFirstName(String firstName) {
-        this.firstName = firstName;
-    }
+	private Long idNumber;
 
-    public String getLastName() {
-        return lastName;
-    }
 
-    public void setLastName(String lastName) {
-        this.lastName = lastName;
-    }
+	public JwtResponse(String token, Long id, String username, String email, String firstName,
+	                   String lastName, String homePhoneNumber, String mobilePhoneNumber, String country, String city,
+	                   String street, String idType, Long idNumber) {
+		this.token = token;
+		this.id = id;
+		this.username = username;
+		this.email = email;
+		this.firstName = firstName;
+		this.lastName = lastName;
+		this.homePhoneNumber = homePhoneNumber;
+		this.mobilePhoneNumber = mobilePhoneNumber;
+		this.country = country;
+		this.city = city;
+		this.street = street;
+		this.idType = idType;
+		this.idNumber = idNumber;
+	}
 
-    public String getHomePhoneNumber() {
-        return homePhoneNumber;
-    }
+	public String getToken() {
+		return token;
+	}
 
-    public void setHomePhoneNumber(String homePhoneNumber) {
-        this.homePhoneNumber = homePhoneNumber;
-    }
+	public void setToken(String token) {
+		this.token = token;
+	}
 
-    public String getMobilePhoneNumber() {
-        return mobilePhoneNumber;
-    }
+	public String getType() {
+		return type;
+	}
 
-    public void setMobilePhoneNumber(String mobilePhoneNumber) {
-        this.mobilePhoneNumber = mobilePhoneNumber;
-    }
+	public void setType(String type) {
+		this.type = type;
+	}
 
-    public String getCountry() {
-        return country;
-    }
+	public Long getId() {
+		return id;
+	}
 
-    public void setCountry(String country) {
-        this.country = country;
-    }
+	public void setId(Long id) {
+		this.id = id;
+	}
 
-    public String getCity() {
-        return city;
-    }
+	public String getUsername() {
+		return username;
+	}
 
-    public void setCity(String city) {
-        this.city = city;
-    }
+	public void setUsername(String username) {
+		this.username = username;
+	}
 
-    public String getStreet() {
-        return street;
-    }
+	public String getEmail() {
+		return email;
+	}
 
-    public void setStreet(String street) {
-        this.street = street;
-    }
+	public void setEmail(String email) {
+		this.email = email;
+	}
 
-    public String getIdType() {
-        return idType;
-    }
+	public String getFirstName() {
+		return firstName;
+	}
 
-    public void setIdType(String idType) {
-        this.idType = idType;
-    }
+	public void setFirstName(String firstName) {
+		this.firstName = firstName;
+	}
 
-    public Long getIdNumber() {
-        return idNumber;
-    }
+	public String getLastName() {
+		return lastName;
+	}
 
-    public void setIdNumber(Long idNumber) {
-        this.idNumber = idNumber;
-    }
+	public void setLastName(String lastName) {
+		this.lastName = lastName;
+	}
+
+	public String getHomePhoneNumber() {
+		return homePhoneNumber;
+	}
+
+	public void setHomePhoneNumber(String homePhoneNumber) {
+		this.homePhoneNumber = homePhoneNumber;
+	}
+
+	public String getMobilePhoneNumber() {
+		return mobilePhoneNumber;
+	}
+
+	public void setMobilePhoneNumber(String mobilePhoneNumber) {
+		this.mobilePhoneNumber = mobilePhoneNumber;
+	}
+
+	public String getCountry() {
+		return country;
+	}
+
+	public void setCountry(String country) {
+		this.country = country;
+	}
+
+	public String getCity() {
+		return city;
+	}
+
+	public void setCity(String city) {
+		this.city = city;
+	}
+
+	public String getStreet() {
+		return street;
+	}
+
+	public void setStreet(String street) {
+		this.street = street;
+	}
+
+	public String getIdType() {
+		return idType;
+	}
+
+	public void setIdType(String idType) {
+		this.idType = idType;
+	}
+
+	public Long getIdNumber() {
+		return idNumber;
+	}
+
+	public void setIdNumber(Long idNumber) {
+		this.idNumber = idNumber;
+	}
 }

@@ -6,14 +6,23 @@ import java.sql.Timestamp;
 
 public class OccupationResponse {
 	private Long id;
+
 	private Timestamp start;
+
 	private Timestamp end;
+
 	private Float payment;
+
 	private Long hotelId;
+
 	private Long roomTypeId;
+
 	private Long receptionistId;
+
 	private Long guestId;
+
 	private GuestInfo guestInfo;
+
 
 	public OccupationResponse(Long id, Timestamp start, Timestamp end, Float payment, Long hotelId, Long roomTypeId,
 	                          Long receptionistId) {
