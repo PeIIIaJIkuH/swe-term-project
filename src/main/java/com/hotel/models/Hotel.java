@@ -1,67 +1,68 @@
 package com.hotel.models;
 
 import javax.persistence.*;
-import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.Size;
-import java.util.ArrayList;
+import javax.validation.constraints.NotNull;
 import java.util.HashSet;
-import java.util.List;
 import java.util.Set;
 
 @Entity
-@Table(name = "hotel")
+@Table(name = "hotel",
+        uniqueConstraints = @UniqueConstraint(columnNames = "name"))
 public class Hotel {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @NotBlank
-    @Size(max = 50)
+    @NotNull
     private String name;
 
-    @NotBlank
-    @Size(max = 50)
+    @NotNull
     private String country;
 
-    @NotBlank
-    @Size(max = 50)
+    @NotNull
     private String city;
 
-    @NotBlank
-    @Size(max = 50)
+    @NotNull
     private String street;
 
-    @ElementCollection(fetch = FetchType.EAGER)
-    @CollectionTable(name = "hotel_feature", joinColumns = @JoinColumn(name = "hotel_id"))
-    @Column(name = "name")
-    private Set<String> features;
+    @ElementCollection
+    @CollectionTable(name = "hotel_feature",
+            joinColumns = @JoinColumn(name = "hotel_id", referencedColumnName = "id", nullable = false))
+    @Column(name = "name", nullable = false)
+    private Set<String> features = new HashSet<>();
 
-    @ElementCollection(fetch = FetchType.EAGER)
-    @CollectionTable(name = "hotel_phone_number", joinColumns = @JoinColumn(name = "hotel_id"))
-    @Column(name = "number")
-    private Set<String> phoneNumbers;
+    @ElementCollection
+    @CollectionTable(name = "hotel_phone",
+            joinColumns = @JoinColumn(name = "hotel_id", referencedColumnName = "id", nullable = false))
+    @Column(name = "number", nullable = false, unique = true)
+    private Set<String> numbers = new HashSet<>();
 
     @ManyToMany
     @JoinTable(name = "hotel_season",
-            joinColumns = @JoinColumn(name = "hotel_id"),
-            inverseJoinColumns = @JoinColumn(name = "season_id"))
+            joinColumns = @JoinColumn(name = "hotel_id", referencedColumnName = "id"),
+            inverseJoinColumns = @JoinColumn(name = "season_id", referencedColumnName = "id"))
     private Set<Season> seasons = new HashSet<>();
 
-    @OneToMany(cascade = CascadeType.ALL)
-    private List<Employee> employees = new ArrayList<>();
+    @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
+    @JoinTable(name = "hotel_rooms",
+            joinColumns = @JoinColumn(name = "hotel_id", referencedColumnName = "id"),
+            inverseJoinColumns = @JoinColumn(name = "room_id", referencedColumnName = "id"))
+    private Set<Room> rooms = new HashSet<>();
+
+    @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
+    @JoinTable(name = "hotel_room_types",
+            joinColumns = @JoinColumn(name = "hotel_id", referencedColumnName = "id"),
+            inverseJoinColumns = @JoinColumn(name = "room_type_id", referencedColumnName = "id"))
+    private Set<RoomType> roomTypes = new HashSet<>();
 
     public Hotel() {
     }
 
-    public Hotel(@NotBlank @Size(max = 50) String name, @NotBlank @Size(max = 50) String country,
-                 @NotBlank @Size(max = 50) String city, @NotBlank @Size(max = 50) String street, Set<String> features,
-                 Set<String> phoneNumbers) {
+    public Hotel(@NotNull String name, @NotNull String country, @NotNull String city, @NotNull String street) {
         this.name = name;
         this.country = country;
         this.city = city;
         this.street = street;
-        this.features = features;
-        this.phoneNumbers = phoneNumbers;
     }
 
     public Long getId() {
@@ -112,12 +113,12 @@ public class Hotel {
         this.features = features;
     }
 
-    public Set<String> getPhoneNumbers() {
-        return phoneNumbers;
+    public Set<String> getNumbers() {
+        return numbers;
     }
 
-    public void setPhoneNumbers(Set<String> phoneNumbers) {
-        this.phoneNumbers = phoneNumbers;
+    public void setNumbers(Set<String> numbers) {
+        this.numbers = numbers;
     }
 
     public Set<Season> getSeasons() {
@@ -126,5 +127,21 @@ public class Hotel {
 
     public void setSeasons(Set<Season> seasons) {
         this.seasons = seasons;
+    }
+
+    public Set<Room> getRooms() {
+        return rooms;
+    }
+
+    public void setRooms(Set<Room> rooms) {
+        this.rooms = rooms;
+    }
+
+    public Set<RoomType> getRoomTypes() {
+        return roomTypes;
+    }
+
+    public void setRoomTypes(Set<RoomType> roomTypes) {
+        this.roomTypes = roomTypes;
     }
 }

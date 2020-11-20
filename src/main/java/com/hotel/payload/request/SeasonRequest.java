@@ -1,45 +1,26 @@
-package com.hotel.models;
+package com.hotel.payload.request;
 
-import javax.persistence.*;
+import com.fasterxml.jackson.annotation.JsonFormat;
+import org.springframework.format.annotation.DateTimeFormat;
+
+import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import java.sql.Date;
 
-@Entity
-@Table(name = "season")
-public class Season {
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
-
-    @NotNull
+public class SeasonRequest {
+    @NotBlank
     private String name;
 
     @NotNull
+    @JsonFormat(pattern = "dd.MM.yyyy")
     private Date start;
 
     @NotNull
+    @JsonFormat(pattern = "dd.MM.yyyy")
     private Date end;
 
     @NotNull
     private Float priceFactor;
-
-    public Season() {
-    }
-
-    public Season(@NotNull String name, @NotNull Date start, @NotNull Date end, @NotNull Float priceFactor) {
-        this.name = name;
-        this.start = start;
-        this.end = end;
-        this.priceFactor = priceFactor;
-    }
-
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
-    }
 
     public String getName() {
         return name;

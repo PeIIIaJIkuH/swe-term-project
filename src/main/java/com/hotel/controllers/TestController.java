@@ -14,6 +14,18 @@ public class TestController {
 	public String allAccess() {
 		return "Public Content.";
 	}
+
+	@GetMapping("/vip")
+	@PreAuthorize("hasAuthority('TYPE_VIP')")
+	public String vipAccess() {
+		return "VIP Content.";
+	}
+
+	@GetMapping("/bronze")
+	@PreAuthorize("hasAuthority('TYPE_BRONZE')")
+	public String bronzeAccess() {
+		return "Brobze Content.";
+	}
 	
 	@GetMapping("/user")
 	@PreAuthorize("hasRole('USER') or hasRole('MODERATOR') or hasRole('ADMIN')")

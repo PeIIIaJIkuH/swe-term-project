@@ -1,6 +1,5 @@
 package com.hotel.controllers;
 
-import com.hotel.exception.HotelNotFoundException;
 import com.hotel.models.ERole;
 import com.hotel.models.Employee;
 import com.hotel.models.Hotel;
@@ -19,6 +18,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
+import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
@@ -26,13 +26,12 @@ import org.springframework.web.bind.annotation.*;
 import javax.validation.Valid;
 import java.util.HashSet;
 import java.util.List;
-import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Collectors;
 
 @CrossOrigin(origins = "*", maxAge = 3600)
 @RestController
-@RequestMapping("/api/employee")
+@RequestMapping("/api/employee/")
 public class EmployeeAuthController {
     @Autowired
     AuthenticationManager authenticationManager;
@@ -49,20 +48,21 @@ public class EmployeeAuthController {
     @Autowired
     JwtUtils jwtUtils;
 
-    @Autowired HotelRepository hotelRepository;
+    @Autowired
+    HotelRepository hotelRepository;
 
     @PostMapping("/login")
-    public ResponseEntity<?> authenticateUser(@Valid @RequestBody LoginRequest loginRequest) {
+    public ResponseEntity<?> authenticateUser(@Valid @RequestBody LoginRequest request) {
 
         Authentication authentication = authenticationManager.authenticate(
-                new UsernamePasswordAuthenticationToken(loginRequest.getUsername(), loginRequest.getPassword()));
+                new UsernamePasswordAuthenticationToken(request.getUsername(), request.getPassword()));
 
         SecurityContextHolder.getContext().setAuthentication(authentication);
         String jwt = jwtUtils.generateJwtToken(authentication);
 
         UserDetailsImpl employeeDetails = (UserDetailsImpl) authentication.getPrincipal();
         List<String> roles = employeeDetails.getAuthorities().stream()
-                .map(role -> role.getAuthority())
+                .map(GrantedAuthority::getAuthority)
                 .collect(Collectors.toList());
 
         return ResponseEntity.ok(new GuestJwtResponse(jwt,
@@ -82,69 +82,70 @@ public class EmployeeAuthController {
     }
 
     @PostMapping("/register")
-    public ResponseEntity<?> registerGuest(@Valid @RequestBody EmployeeRegisterRequest employeeRegisterRequest) {
-        if (employeeRepository.existsByUsername(employeeRegisterRequest.getUsername())) {
-            return ResponseEntity
-                    .badRequest()
+    public ResponseEntity<?> registerGuest(@Valid @RequestBody EmployeeRegisterRequest request) {
+        if (employeeRepository.existsByUsername(request.getUsername())) {
+            return ResponseEntity.badRequest()
                     .body(new MessageResponse("Error: Username is already taken!"));
         }
 
-        if (employeeRepository.existsByEmail(employeeRegisterRequest.getEmail())) {
-            return ResponseEntity
-                    .badRequest()
+        if (employeeRepository.existsByEmail(request.getEmail())) {
+            return ResponseEntity.badRequest()
                     .body(new MessageResponse("Error: Email is already in use!"));
         }
 
-        Employee employee = new Employee(employeeRegisterRequest.getUsername(),
-                employeeRegisterRequest.getEmail(),
-                encoder.encode(employeeRegisterRequest.getPassword()),
-                employeeRegisterRequest.getFirstName(),
-                employeeRegisterRequest.getLastName(),
-                employeeRegisterRequest.getHomePhoneNumber(),
-                employeeRegisterRequest.getMobilePhoneNumber(),
-                employeeRegisterRequest.getCountry(),
-                employeeRegisterRequest.getCity(),
-                employeeRegisterRequest.getStreet(),
-                employeeRegisterRequest.getIdType(),
-                employeeRegisterRequest.getIdNumber());
+        Employee employee = new Employee(request.getUsername(),
+                request.getEmail(),
+                encoder.encode(request.getPassword()),
+                request.getFirstName(),
+                request.getLastName(),
+                request.getHomePhoneNumber(),
+                request.getMobilePhoneNumber(),
+                request.getCountry(),
+                request.getCity(),
+                request.getStreet(),
+                request.getIdType(),
+                request.getIdNumber());
 
-        String hotelName = employeeRegisterRequest.getHotelName();
-        Hotel hotel = (Hotel) hotelRepository.findByName(hotelName).orElseThrow(() -> new HotelNotFoundException("No hotel with name: " + hotelName));
+        if (!hotelRepository.existsById(request.getHotelId())) {
+            return ResponseEntity.badRequest()
+                    .body(new MessageResponse("Error: Hotel is not found!"));
+        }
+        Hotel hotel = (Hotel) hotelRepository.findById(request.getHotelId()).get();
         employee.setHotel(hotel);
 
-        Set<String> strRoles = employeeRegisterRequest.getRoles();
+        Set<String> strRoles = request.getRoles();
         Set<Role> roles = new HashSet<>();
 
         if (strRoles == null) {
             Role employeeRole = roleRepository.findByName(ERole.ROLE_EMPLOYEE)
-                    .orElseThrow(() -> new RuntimeException("Error: Role is not found."));
+                    .orElseThrow(() -> new RuntimeException("Error: Role is not found!"));
             roles.add(employeeRole);
         } else {
             strRoles.forEach(role -> {
                 switch (role) {
                     case "admin":
                         Role adminRole = roleRepository.findByName(ERole.ROLE_ADMIN)
-                                .orElseThrow(() -> new RuntimeException("Error: Role is not found."));
+                                .orElseThrow(() -> new RuntimeException("Error: Role is not found!"));
                         roles.add(adminRole);
                         break;
                     case "manager":
                         Role managerRole = roleRepository.findByName(ERole.ROLE_MANAGER)
-                                .orElseThrow(() -> new RuntimeException("Error: Role is not found."));
+                                .orElseThrow(() -> new RuntimeException("Error: Role is not found!"));
                         roles.add(managerRole);
                         break;
                     case "receptionist":
                         Role receptionistRole = roleRepository.findByName(ERole.ROLE_RECEPTIONIST)
-                                .orElseThrow(() -> new RuntimeException("Error: Role is not found."));
+                                .orElseThrow(() -> new RuntimeException("Error: Role is not found!"));
                         roles.add(receptionistRole);
                         break;
                     case "cleaning":
                         Role cleaningRole = roleRepository.findByName(ERole.ROLE_CLEANING)
-                                .orElseThrow(() -> new RuntimeException("Error: Role is not found."));
+                                .orElseThrow(() -> new RuntimeException("Error: Role is not found!"));
                         roles.add(cleaningRole);
                         break;
                     default:
                         Role employeeRole = roleRepository.findByName(ERole.ROLE_EMPLOYEE)
-                                .orElseThrow(() -> new RuntimeException("Error: Role is not found."));
+                                .orElseThrow(() -> new RuntimeException("Error: Role is not found!"));
                         roles.add(employeeRole);
                 }
             });

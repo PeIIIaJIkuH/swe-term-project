@@ -1,14 +1,16 @@
 package com.hotel.models;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotNull;
 
 @Entity
 @Table(name = "role")
 public class Role {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Integer id;
+    private Long id;
 
+    @NotNull
     @Enumerated(EnumType.STRING)
     @Column(length = 20)
     private ERole name;
@@ -17,15 +19,15 @@ public class Role {
 
     }
 
-    public Role(ERole name) {
+    public Role(@NotNull ERole name) {
         this.name = name;
     }
 
-    public Integer getId() {
+    public Long getId() {
         return id;
     }
 
-    public void setId(Integer id) {
+    public void setId(Long id) {
         this.id = id;
     }
 

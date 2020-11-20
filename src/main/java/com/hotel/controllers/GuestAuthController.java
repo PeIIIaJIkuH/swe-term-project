@@ -16,6 +16,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
+import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
@@ -28,7 +29,7 @@ import java.util.stream.Collectors;
 
 @CrossOrigin(origins = "*", maxAge = 3600)
 @RestController
-@RequestMapping("/api/guest")
+@RequestMapping("/api/guest/")
 public class GuestAuthController {
     @Autowired
     AuthenticationManager authenticationManager;
@@ -46,17 +47,17 @@ public class GuestAuthController {
     JwtUtils jwtUtils;
 
     @PostMapping("/login")
-    public ResponseEntity<?> authenticateUser(@Valid @RequestBody LoginRequest loginRequest) {
+    public ResponseEntity<?> authenticateUser(@Valid @RequestBody LoginRequest request) {
 
         Authentication authentication = authenticationManager.authenticate(
-                new UsernamePasswordAuthenticationToken(loginRequest.getUsername(), loginRequest.getPassword()));
+                new UsernamePasswordAuthenticationToken(request.getUsername(), request.getPassword()));
 
         SecurityContextHolder.getContext().setAuthentication(authentication);
         String jwt = jwtUtils.generateJwtToken(authentication);
 
         UserDetailsImpl guestDetails = (UserDetailsImpl) authentication.getPrincipal();
         List<String> types = guestDetails.getAuthorities().stream()
-                .map(type -> type.getAuthority())
+                .map(GrantedAuthority::getAuthority)
                 .collect(Collectors.toList());
 
         return ResponseEntity.ok(new GuestJwtResponse(jwt,
@@ -76,33 +77,33 @@ public class GuestAuthController {
     }
 
     @PostMapping("/register")
-    public ResponseEntity<?> registerGuest(@Valid @RequestBody GuestRegisterRequest guestRegisterRequest) {
-        if (guestRepository.existsByUsername(guestRegisterRequest.getUsername())) {
+    public ResponseEntity<?> registerGuest(@Valid @RequestBody GuestRegisterRequest request) {
+        if (guestRepository.existsByUsername(request.getUsername())) {
             return ResponseEntity
                     .badRequest()
                     .body(new MessageResponse("Error: Username is already taken!"));
         }
 
-        if (guestRepository.existsByEmail(guestRegisterRequest.getEmail())) {
+        if (guestRepository.existsByEmail(request.getEmail())) {
             return ResponseEntity
                     .badRequest()
                     .body(new MessageResponse("Error: Email is already in use!"));
         }
 
-        Guest guest = new Guest(guestRegisterRequest.getUsername(),
-                guestRegisterRequest.getEmail(),
-                encoder.encode(guestRegisterRequest.getPassword()),
-                guestRegisterRequest.getFirstName(),
-                guestRegisterRequest.getLastName(),
-                guestRegisterRequest.getHomePhoneNumber(),
-                guestRegisterRequest.getMobilePhoneNumber(),
-                guestRegisterRequest.getCountry(),
-                guestRegisterRequest.getCity(),
-                guestRegisterRequest.getStreet(),
-                guestRegisterRequest.getIdType(),
-                guestRegisterRequest.getIdNumber());
+        Guest guest = new Guest(request.getUsername(),
+                request.getEmail(),
+                encoder.encode(request.getPassword()),
+                request.getFirstName(),
+                request.getLastName(),
+                request.getHomePhoneNumber(),
+                request.getMobilePhoneNumber(),
+                request.getCountry(),
+                request.getCity(),
+                request.getStreet(),
+                request.getIdType(),
+                request.getIdNumber());
 
-        Set<String> strTypes = guestRegisterRequest.getTypes();
+        Set<String> strTypes = request.getTypes();
         Set<Type> types = new HashSet<>();
 
         if (strTypes == null) {

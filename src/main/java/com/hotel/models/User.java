@@ -2,10 +2,8 @@ package com.hotel.models;
 
 import javax.persistence.*;
 import javax.validation.constraints.Email;
-import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
-import java.util.HashSet;
-import java.util.Set;
 
 @Entity
 @Table(name = "user",
@@ -19,55 +17,58 @@ public class User {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @NotBlank
+    @NotNull
     @Size(max = 20)
     private String username;
 
-    @NotBlank
+    @NotNull
     @Size(max = 50)
     @Email
     private String email;
 
-    @NotBlank
+    @NotNull
     @Size(max = 120)
     private String password;
 
-    @NotBlank
+    @NotNull
     @Size(max = 50)
     private String firstName;
 
-    @NotBlank
+    @NotNull
     @Size(max = 50)
     private String lastName;
 
-    @Size(max = 12)
     private String homePhoneNumber;
 
-    @Size(max = 12)
     private String mobilePhoneNumber;
 
+    @NotNull
     @Size(max = 50)
     private String country;
 
+    @NotNull
     @Size(max = 50)
     private String city;
 
+    @NotNull
     @Size(max = 50)
     private String street;
 
-    @Size(max = 25)
+    @NotNull
     private String idType;
 
+    @NotNull
     private Long idNumber;
 
     public User() {
     }
 
-    public User(@NotBlank @Size(max = 20) String username, @NotBlank @Size(max = 50) @Email String email,
-                @NotBlank @Size(max = 120) String password, @NotBlank @Size(max = 50) String firstName,
-                @NotBlank @Size(max = 50) String lastName, @Size(max = 12) String homePhoneNumber,
-                @Size(max = 12) String mobilePhoneNumber, @Size(max = 50) String country, @Size(max = 50) String city,
-                @Size(max = 50) String street, @Size(max = 25) String idType, Long idNumber) {
+    public User(@NotNull @Size(max = 20) String username, @NotNull @Size(max = 50) @Email String email,
+                @NotNull @Size(max = 120) String password, @NotNull @Size(max = 50) String firstName,
+                @NotNull @Size(max = 50) String lastName, @Size(max = 12) String homePhoneNumber,
+                @Size(max = 12) String mobilePhoneNumber, @NotNull @Size(max = 50) String country,
+                @NotNull @Size(max = 50) String city, @NotNull @Size(max = 50) String street,
+                @NotNull @Size(max = 25) String idType, @NotNull Long idNumber) {
         this.username = username;
         this.email = email;
         this.password = password;

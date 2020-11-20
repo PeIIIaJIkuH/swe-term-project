@@ -5,16 +5,16 @@ import com.hotel.models.Hotel;
 import java.util.Set;
 
 public class EmployeeRegisterRequest extends RegisterRequest {
-    private String hotelName;
+    private Long hotelId;
 
     private Set<String> roles;
 
-    public String getHotelName() {
-        return hotelName;
+    public Long getHotelId() {
+        return hotelId;
     }
 
-    public void setHotelName(String hotelName) {
-        this.hotelName = hotelName;
+    public void setHotelId(Long hotelId) {
+        this.hotelId = hotelId;
     }
 
     public Set<String> getRoles() {

@@ -1,5 +1,7 @@
 package com.hotel.models;
 
+import com.hotel.models.relations.*;
+
 import javax.persistence.*;
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
