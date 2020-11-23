@@ -34,9 +34,11 @@ public class RegisterRequest {
 
 	private String street;
 
+	@NotNull
 	private String idType;
 
-	private Long idNumber;
+	@NotNull
+	private String idNumber;
 
 	public String getUsername() {
 		return username;
@@ -126,11 +128,11 @@ public class RegisterRequest {
 		this.idType = idType;
 	}
 
-	public Long getIdNumber() {
+	public String getIdNumber() {
 		return idNumber;
 	}
 
-	public void setIdNumber(Long idNumber) {
+	public void setIdNumber(String idNumber) {
 		this.idNumber = idNumber;
 	}
 }

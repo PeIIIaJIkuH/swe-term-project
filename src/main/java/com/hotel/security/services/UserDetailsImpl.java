@@ -35,12 +35,12 @@ public class UserDetailsImpl implements UserDetails {
     private String city;
     private String street;
     private String idType;
-    private Long idNumber;
+    private String idNumber;
 
-    public UserDetailsImpl(Long id, String username, String email, String password,
-                           Collection<? extends GrantedAuthority> authorities, String firstName, String lastName,
-                           String homePhoneNumber, String mobilePhoneNumber, String country, String city, String street,
-                           String idType, Long idNumber) {
+    public UserDetailsImpl(Long id, String username, String email, String password, Collection<?
+            extends GrantedAuthority> authorities, String firstName, String lastName, String homePhoneNumber,
+                           String mobilePhoneNumber, String country, String city, String street, String idType,
+                           String idNumber) {
         this.id = id;
         this.username = username;
         this.email = email;
@@ -187,11 +187,11 @@ public class UserDetailsImpl implements UserDetails {
         this.idType = idType;
     }
 
-    public Long getIdNumber() {
+    public String getIdNumber() {
         return idNumber;
     }
 
-    public void setIdNumber(Long idNumber) {
+    public void setIdNumber(String idNumber) {
         this.idNumber = idNumber;
     }
 

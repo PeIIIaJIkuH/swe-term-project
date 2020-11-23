@@ -53,7 +53,7 @@ public class User {
 	private String idType;
 
 	@NotNull
-	private Long idNumber;
+	private String idNumber;
 
 	public User() {
 	}
@@ -61,7 +61,7 @@ public class User {
 	public User(@NotNull @Size(max = 20) String username, @NotNull @Size(max = 50) @Email String email,
 	            @NotNull @Size(max = 120) String password, @NotNull String firstName, @NotNull String lastName,
 	            String homePhoneNumber, String mobilePhoneNumber, @NotNull String country, @NotNull String city,
-	            @NotNull String street, @NotNull String idType, @NotNull Long idNumber) {
+	            @NotNull String street, @NotNull String idType, @NotNull String idNumber) {
 		this.username = username;
 		this.email = email;
 		this.password = password;
@@ -156,11 +156,11 @@ public class User {
 		this.idType = idType;
 	}
 
-	public Long getIdNumber() {
+	public String getIdNumber() {
 		return idNumber;
 	}
 
-	public void setIdNumber(Long idNumber) {
+	public void setIdNumber(String idNumber) {
 		this.idNumber = idNumber;
 	}
 

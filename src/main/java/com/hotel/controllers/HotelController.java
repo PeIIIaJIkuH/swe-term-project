@@ -7,6 +7,8 @@ import com.hotel.payload.request.HotelRequest;
 import com.hotel.payload.request.RoomRequest;
 import com.hotel.payload.request.RoomTypeFeatureRequest;
 import com.hotel.payload.request.RoomTypeRequest;
+import com.hotel.payload.response.HotelDetailedResponse;
+import com.hotel.payload.response.HotelMainPageResponse;
 import com.hotel.payload.response.HotelResponse;
 import com.hotel.payload.response.MessageResponse;
 import com.hotel.repository.*;
@@ -61,6 +63,18 @@ public class HotelController {
 		return response;
 	}
 
+	private HotelDetailedResponse toDetailedResponse(Hotel hotel) {
+		HotelDetailedResponse response = new HotelDetailedResponse(hotel.getId(),
+				hotel.getName(),
+				hotel.getCountry(),
+				hotel.getCity(),
+				hotel.getStreet(),
+				hotel.getFeatures(),
+				hotel.getNumbers(),
+				hotel.getRoomTypes());
+		return response;
+	}
+
 	@GetMapping
 	public ResponseEntity<?> getAllHotels() {
 		List<HotelResponse> hotels = new ArrayList<>();
@@ -78,7 +92,25 @@ public class HotelController {
 					.body(new MessageResponse("Error: Hotel is not found!"));
 		}
 		Hotel hotel = hotelRepository.findById(id).get();
-		return ResponseEntity.ok(toResponse(hotel));
+		return ResponseEntity.ok(toDetailedResponse(hotel));
+	}
+
+	@GetMapping("/main")
+	public ResponseEntity<?> getHotelsMainPage() {
+		List<HotelMainPageResponse> hotels = new ArrayList<>();
+		hotelRepository.findAll().forEach(hotel -> {
+			int sum = 0;
+			for (RoomType roomType : hotel.getRoomTypes()) {
+				sum += roomType.getPrice();
+			}
+			HotelMainPageResponse response = new HotelMainPageResponse(hotel.getId(),
+					hotel.getName(),
+					hotel.getCountry(),
+					hotel.getCity(),
+					sum / hotel.getRoomTypes().size());
+			hotels.add(response);
+		});
+		return ResponseEntity.ok(hotels);
 	}
 
 	@PostMapping

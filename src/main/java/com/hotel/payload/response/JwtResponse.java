@@ -27,12 +27,12 @@ public class JwtResponse {
 
 	private String idType;
 
-	private Long idNumber;
+	private String idNumber;
 
 
 	public JwtResponse(String token, Long id, String username, String email, String firstName,
 	                   String lastName, String homePhoneNumber, String mobilePhoneNumber, String country, String city,
-	                   String street, String idType, Long idNumber) {
+	                   String street, String idType, String idNumber) {
 		this.token = token;
 		this.id = id;
 		this.username = username;
@@ -152,11 +152,11 @@ public class JwtResponse {
 		this.idType = idType;
 	}
 
-	public Long getIdNumber() {
+	public String getIdNumber() {
 		return idNumber;
 	}
 
-	public void setIdNumber(Long idNumber) {
+	public void setIdNumber(String idNumber) {
 		this.idNumber = idNumber;
 	}
 }

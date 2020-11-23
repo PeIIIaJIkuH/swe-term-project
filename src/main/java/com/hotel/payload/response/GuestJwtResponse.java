@@ -7,7 +7,7 @@ public class GuestJwtResponse extends JwtResponse {
 
 	public GuestJwtResponse(String token, Long id, String username, String email, String firstName,
 	                        String lastName, String homePhoneNumber, String mobilePhoneNumber, String country,
-	                        String city, String street, String idType, Long idNumber, List<String> types) {
+	                        String city, String street, String idType, String idNumber, List<String> types) {
 		super(token, id, username, email, firstName, lastName, homePhoneNumber, mobilePhoneNumber, country, city,
                 street, idType, idNumber);
 		this.types = types;

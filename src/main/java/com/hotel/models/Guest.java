@@ -23,7 +23,7 @@ public class Guest extends User {
 	public Guest(@NotNull @Size(max = 20) String username, @NotNull @Size(max = 50) @Email String email,
 	             @NotNull @Size(max = 120) String password, @NotNull String firstName, @NotNull String lastName,
 	             String homePhoneNumber, String mobilePhoneNumber, @NotNull String country, @NotNull String city,
-	             @NotNull String street, @NotNull String idType, @NotNull Long idNumber) {
+	             @NotNull String street, @NotNull String idType, @NotNull String idNumber) {
 		super(username, email, password, firstName, lastName, homePhoneNumber, mobilePhoneNumber, country, city,
 				street, idType, idNumber);
 	}
