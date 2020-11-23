@@ -1,0 +1,51 @@
+.header {
+    background: #242a36;
+    padding: 5px 15px;
+    grid-area: header;
+}
+
+.logoLink {
+    display: flex;
+    align-items: center;
+}
+
+.logo {
+    width: 60px;
+    height: 60px;
+    object-fit: contain;
+}
+
+.inner {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.right {
+    display: flex;
+    align-items: center;
+}
+
+.bookLink, .authLink {
+    text-decoration: none;
+    font-size: 1.5em;
+    color: white;
+    padding: 0 15px;
+    /*border: 2px solid white;*/
+    border-radius: 10px;
+}
+
+.authLink {
+    margin-left: 50px;
+}
+
+/*.bookLink {*/
+/*    justify-self: flex-end;*/
+/*}*/
+
+/*.right {*/
+/*    display: flex;*/
+/*    align-items: center;*/
+/*    justify-self: center;*/
+/*}*/
+

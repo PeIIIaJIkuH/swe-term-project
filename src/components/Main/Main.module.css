@@ -1,0 +1,67 @@
+.mainContainer {
+    display: flex;
+    justify-content: center;
+    margin: auto;
+}
+
+.main {
+    background-size: cover;
+    background-repeat: no-repeat;
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+}
+
+.inner {
+    background: rgba(0, 0, 0, .75);
+    text-align: center;
+    width: 500px;
+    padding: 50px;
+}
+
+.content {
+    width: 300px;
+    text-align: left;
+    margin: auto;
+}
+
+.title {
+    font-size: 40px;
+    color: #bda76e;
+}
+
+.select {
+    width: 300px;
+    margin: 0 auto;
+}
+
+.info {
+    color: white;
+}
+
+.info span {
+    color: #bda76e;
+}
+
+.btn {
+    text-align: center;
+}
+
+.btn button {
+    font-size: 21px;
+    padding: 5px 20px;
+    border: 0;
+    background-color: #3498db;
+    color: #fff;
+    border-radius: 3px;
+    transition: all 250ms ease-in-out;
+    cursor: pointer;
+}
+
+.btn button:hover {
+    background-color: #2386c8;
+}
+
+.btn button:focus {
+    outline: none;
+}

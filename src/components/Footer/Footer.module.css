@@ -1,0 +1,12 @@
+.footer {
+    background: #242a36;
+    height: 50px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    grid-area: footer;
+}
+
+.info {
+    color: white;
+}

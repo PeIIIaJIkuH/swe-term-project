@@ -1,0 +1,233 @@
+.hotel {
+    grid-area: main;
+}
+
+.hotelBg {
+    object-fit: cover;
+    max-width: 100%;
+}
+
+.BookingLine {
+    margin-top: -5px;
+    background: #242a36;
+    display: grid;
+    grid-template-columns: repeat(5, 1fr);
+    grid-template-rows: 1fr;
+    grid-column-gap: 20px;
+    padding: 15px;
+}
+
+.BookingLine input[type='date'] {
+    height: 35px;
+    border-radius: 3px;
+    outline: none;
+    border: none;
+}
+
+.block {
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+}
+
+.BookingLine div span {
+    color: white;
+    font-size: 20px;
+    margin-right: 10px;
+}
+
+.BookNow {
+    background-color: #bda76e;
+    flex: 0.3;
+    border: none;
+    outline: none;
+    cursor: pointer;
+}
+
+.BookNow span {
+    color: #242a36;
+    font-size: 18px;
+    font-weight: 900;
+}
+
+.HotelDescription {
+    text-align: center;
+    margin-top: 50px;
+}
+
+.Logo {
+    margin: 30px auto;
+    height: 200px;
+    object-fit: contain;
+    display: block;
+}
+
+.Footer {
+    width: 100%;
+    height: 200px;
+    background-color: #242A36;
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+}
+
+.Footer .FooterImage {
+    position: absolute;
+    width: 100%;
+    height: 200px;
+    opacity: 0.1;
+    z-index: 0;
+}
+
+.Footer > div {
+    padding: 50px;
+    z-index: 999;
+    width: 600px;
+}
+
+.Footer div span {
+    color: #f5f5f5;
+    font-size: 20px;
+}
+
+.Footer div span .main {
+    color: #bda76e;
+    font-size: 30px;
+}
+
+.Footer div img {
+    width: 30px;
+    margin-left: 10px;
+}
+
+.RoomSelector {
+    display: flex;
+    flex-direction: column;
+    margin-bottom: 70px;
+    margin-top: 50px;
+}
+
+.RoomSelector b {
+    text-transform: uppercase;
+}
+
+.RoomSelector .Selector {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+}
+
+.RoomSelector .Selector button {
+    background-color: transparent;
+    width: 150px;
+    border-width: 0;
+    outline: none;
+    height: 70px;
+    cursor: pointer;
+}
+
+.RoomSelector .Selector button span {
+    font-size: 24px;
+}
+
+.RoomSelector .Selector button .Selected {
+    color: #bda76e;
+}
+
+.RoomSelector .Rooms {
+    display: flex;
+    flex-direction: column;
+    z-index: 0;
+}
+
+.RoomSelector .Rooms div {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    width: 100%;
+    height: 800px;
+}
+
+.RoomSelector .Rooms .RoomBlock {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    justify-content: flex-start;
+    background-color: #242A36;
+    opacity: 0.9;
+    margin: auto 60% auto auto;
+    padding: 80px;
+}
+
+.RoomSelector .Rooms .RoomBlock button {
+    outline: none;
+}
+
+.RoomSelector .Rooms .RoomBlock .RoomType {
+    text-transform: uppercase;
+    color: #bda76e;
+    font-size: 40px;
+    margin-bottom: 40px;
+}
+
+.RoomSelector .Rooms .RoomBlock .RoomSize {
+    color: #f5f5f5;
+    font-size: 28px;
+    margin-bottom: 40px;
+}
+
+.RoomSelector .Rooms .RoomBlock .RoomDetail {
+    color: #f5f5f5;
+    font-size: 20px;
+    margin-bottom: 50px;
+}
+
+.RoomSelector .Rooms .RoomBlock .BookNow {
+    color: #242A36;
+    font-size: 26px;
+}
+
+.RoomSelector .Rooms .RoomBlock button {
+    background-color: #bda76e;
+    border-width: 0;
+    width: 250px;
+    height: 70px;
+}
+
+.Title {
+    display: block;
+    font-size: 40px;
+    margin-bottom: 50px;
+    text-align: center;
+}
+
+.Title span {
+    color: #bda76e
+}
+
+.Services {
+    display: flex;
+    justify-content: space-around;
+    margin-bottom: 80px;
+}
+
+.Services div {
+    display: flex;
+    flex-direction: column;
+}
+
+.Services div span {
+    font-size: 30px;
+    text-transform: uppercase;
+}
+
+.Services img {
+    width: 500px;
+    height: 250px;
+}
+
+.Meetings {
+    display: flex;
+    flex-direction: column;
+    width: 50%;
+}
