@@ -106,12 +106,20 @@ public class EmployeeAuthController {
                 request.getIdType(),
                 request.getIdNumber());
 
-        if (!hotelRepository.existsById(request.getHotelId())) {
-            return ResponseEntity.badRequest()
-                    .body(new MessageResponse("Error: Hotel is not found!"));
+        if (request.getHotelId() != null) {
+            if (!hotelRepository.existsById(request.getHotelId())) {
+                return ResponseEntity.badRequest()
+                        .body(new MessageResponse("Error: Hotel is not found!"));
+            }
+            Hotel hotel = hotelRepository.findById(request.getHotelId()).get();
+            employee.setHotel(hotel);
+        } else {
+            if (request.getRoles() == null || !request.getRoles().contains("admin")) {
+                return ResponseEntity.badRequest()
+                        .body(new MessageResponse("Error: Only admin can register without hotelId!"));
+            }
         }
-        Hotel hotel = (Hotel) hotelRepository.findById(request.getHotelId()).get();
-        employee.setHotel(hotel);
+
 
         Set<String> strRoles = request.getRoles();
         Set<Role> roles = new HashSet<>();

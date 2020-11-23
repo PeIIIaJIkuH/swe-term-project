@@ -11,6 +11,7 @@ import com.hotel.repository.GuestRepository;
 import com.hotel.repository.MessageRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
@@ -59,6 +60,7 @@ public class MessageController {
 		return ResponseEntity.ok(toResponse(message));
 	}
 
+	@PreAuthorize("hasAuthority('ROLE_MANAGER')")
 	@PostMapping
 	public ResponseEntity<?> createMessage(@Valid @RequestBody MessageRequest request) {
 		if (!employeeRepository.existsById(request.getManagerId())) {

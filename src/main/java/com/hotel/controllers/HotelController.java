@@ -14,6 +14,7 @@ import com.hotel.payload.response.MessageResponse;
 import com.hotel.repository.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
@@ -113,6 +114,7 @@ public class HotelController {
 		return ResponseEntity.ok(hotels);
 	}
 
+	@PreAuthorize("hasAuthority('ROLE_ADMIN')")
 	@PostMapping
 	public ResponseEntity<?> createHotel(@Valid @RequestBody HotelRequest request) {
 		Gson gson = new GsonBuilder().setPrettyPrinting().create();
@@ -177,6 +179,7 @@ public class HotelController {
 		return ResponseEntity.ok(new MessageResponse("Hotel created successfully!"));
 	}
 
+	@PreAuthorize("hasAuthority('ROLE_ADMIN')")
 	@DeleteMapping("/{id}")
 	public ResponseEntity<?> deleteHotel(@PathVariable Long id) {
 		if (!hotelRepository.existsById(id)) {
@@ -187,6 +190,7 @@ public class HotelController {
 		return ResponseEntity.ok(new MessageResponse("Hotel deleted successfully!"));
 	}
 
+	@PreAuthorize("hasAuthority('ROLE_ADMIN')")
 	@PutMapping("/{id}")
 	public ResponseEntity<?> updateHotel(@PathVariable Long id, @Valid @RequestBody HotelRequest request) {
 		if (!hotelRepository.existsById(id)) {

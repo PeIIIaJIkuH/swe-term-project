@@ -1,7 +1,5 @@
 package com.hotel.payload.request;
 
-import com.hotel.models.Hotel;
-
 import java.util.Set;
 
 public class EmployeeRegisterRequest extends RegisterRequest {

@@ -10,6 +10,7 @@ import com.hotel.payload.response.ReservationResponse;
 import com.hotel.repository.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
@@ -74,6 +75,7 @@ public class ReservationController {
 		return ResponseEntity.ok(toResponse(reservation));
 	}
 
+	@PreAuthorize("hasAuthority('TYPE_GUEST') or hasAuthority('ROLE_RECEPTIONIST')")
 	@PostMapping
 	public ResponseEntity<?> createReservation(@Valid @RequestBody ReservationRequest request) {
 		if (!hotelRepository.existsById(request.getHotelId())) {
@@ -126,6 +128,7 @@ public class ReservationController {
 		return ResponseEntity.ok(new MessageResponse("Reservation created successfully!"));
 	}
 
+	@PreAuthorize("hasAuthority('TYPE_GUEST') or hasAuthority('ROLE_RECEPTIONIST')")
 	@DeleteMapping("{id}")
 	public ResponseEntity<?> deleteReservation(@PathVariable Long id) {
 		if (!reservationRepository.existsById(id)) {
@@ -142,6 +145,7 @@ public class ReservationController {
 		return ResponseEntity.ok(new MessageResponse("Reservation deleted successfully!"));
 	}
 
+	@PreAuthorize("hasAuthority('ROLE_RECEPTIONIST')")
 	@PutMapping("/receptionist/{id}")
 	public ResponseEntity<?> receptionistUpdateReservation(
 			@PathVariable Long id,
@@ -195,6 +199,7 @@ public class ReservationController {
 		return ResponseEntity.ok(new MessageResponse("Reservation updated successfully!"));
 	}
 
+	@PreAuthorize("hasAuthority('TYPE_GUEST')")
 	@PutMapping("/{id}")
 	public ResponseEntity<?> updateReservation(@PathVariable Long id,
 	                                           @Valid @RequestBody UpdateReservationRequest request) {

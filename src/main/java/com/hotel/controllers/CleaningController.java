@@ -11,6 +11,7 @@ import com.hotel.repository.EmployeeRepository;
 import com.hotel.repository.RoomRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
@@ -58,6 +59,7 @@ public class CleaningController {
 		return ResponseEntity.ok(toResponse(cleaning));
 	}
 
+	@PreAuthorize("hasAuthority('ROLE_CLEANING')")
 	@PostMapping
 	public ResponseEntity<?> createCleaning(@Valid @RequestBody CleaningRequest request) {
 		if (!employeeRepository.existsById(request.getCleaningWorkerId())) {

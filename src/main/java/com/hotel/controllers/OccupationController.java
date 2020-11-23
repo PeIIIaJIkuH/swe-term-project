@@ -8,6 +8,7 @@ import com.hotel.payload.response.OccupationResponse;
 import com.hotel.repository.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
@@ -71,6 +72,7 @@ public class OccupationController {
 		return ResponseEntity.ok(toResponse(occupation));
 	}
 
+	@PreAuthorize("hasAuthority('ROLE_RECEPTIONIST')")
 	@PostMapping
 	public ResponseEntity<?> createOccupation(@Valid @RequestBody OccupationRequest request) {
 		if (!hotelRepository.existsById(request.getHotelId())) {
@@ -136,6 +138,7 @@ public class OccupationController {
 		return ResponseEntity.ok(new MessageResponse("Occupation created successfully!"));
 	}
 
+	@PreAuthorize("hasAuthority('ROLE_RECEPTIONIST')")
 	@PutMapping("/{id}")
 	public ResponseEntity<?> endOccupation(@PathVariable Long id) {
 		if (!occupationRepository.existsById(id)) {

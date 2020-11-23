@@ -9,6 +9,7 @@ import com.hotel.repository.HotelRepository;
 import com.hotel.repository.RoomTypeRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
@@ -38,6 +39,7 @@ public class RoomTypeController {
 		return ResponseEntity.ok(roomType);
 	}
 
+	@PreAuthorize("hasAuthority('ROLE_ADMIN')")
 	@PostMapping
 	public ResponseEntity<?> createRoomType(@Valid RoomTypeRequest request) {
 		if (!hotelRepository.existsById(request.getHotelId())) {

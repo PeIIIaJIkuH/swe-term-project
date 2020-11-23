@@ -9,6 +9,7 @@ import com.hotel.repository.RoomRepository;
 import com.hotel.repository.RoomTypeRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
@@ -57,6 +58,7 @@ public class RoomController {
 		return ResponseEntity.ok(toResponse(room));
 	}
 
+	@PreAuthorize("hasAuthority('ROLE_ADMIN')")
 	@PostMapping
 	public ResponseEntity<?> createRoom(@Valid @RequestBody RoomRequest request) {
 		if (!hotelRepository.existsById(request.getHotelId())) {
@@ -77,6 +79,7 @@ public class RoomController {
 		return ResponseEntity.ok(new MessageResponse("Room created successfully!"));
 	}
 
+	@PreAuthorize("hasAuthority('ROLE_ADMIN')")
 	@DeleteMapping("/{id}")
 	public ResponseEntity<?> deleteRoom(@PathVariable Long id) {
 		if (!roomRepository.existsById(id)) {

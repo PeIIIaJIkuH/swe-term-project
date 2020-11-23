@@ -8,6 +8,7 @@ import com.hotel.repository.HotelRepository;
 import com.hotel.repository.SeasonRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
@@ -37,6 +38,7 @@ public class SeasonController {
 		return ResponseEntity.ok(seasonRepository.findById(id).get());
 	}
 
+	@PreAuthorize("hasAuthority('ROLE_ADMIN')")
 	@PostMapping
 	public ResponseEntity<?> createSeason(@Valid @RequestBody SeasonRequest request) throws ParseException {
 		if (seasonRepository.existsByName(request.getName())) {
@@ -59,6 +61,7 @@ public class SeasonController {
 		return ResponseEntity.ok(new MessageResponse("Season created successfully!"));
 	}
 
+	@PreAuthorize("hasAuthority('ROLE_ADMIN')")
 	@DeleteMapping("/{id}")
 	public ResponseEntity<?> deleteSeason(@PathVariable Long id) {
 		if (!seasonRepository.existsById(id)) {
@@ -78,6 +81,7 @@ public class SeasonController {
 		return ResponseEntity.ok(new MessageResponse("Season deleted successfully!"));
 	}
 
+	@PreAuthorize("hasAuthority('ROLE_ADMIN')")
 	@PutMapping("/{id}")
 	public ResponseEntity<?> updateSeason(@PathVariable Long id, @Valid @RequestBody SeasonRequest request) throws ParseException {
 		if (!seasonRepository.existsById(id)) {

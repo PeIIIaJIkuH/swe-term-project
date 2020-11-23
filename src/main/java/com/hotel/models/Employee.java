@@ -17,7 +17,8 @@ public class Employee extends User {
 			inverseJoinColumns = @JoinColumn(name = "role_id"))
 	private Set<Role> roles = new HashSet<>();
 
-	@ManyToOne(optional = false)
+
+	@ManyToOne
 	@JoinColumn(name = "hotel_id")
 	private Hotel hotel;
 

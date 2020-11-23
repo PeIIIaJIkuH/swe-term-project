@@ -11,6 +11,7 @@ import com.hotel.repository.MonitoringRepository;
 import com.hotel.repository.RoomRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
@@ -59,6 +60,7 @@ public class MonitoringController {
 		return ResponseEntity.ok(toResponse(monitoring));
 	}
 
+	@PreAuthorize("hasAuthority('ROLE_RECEPTIONIST')")
 	@PostMapping
 	public ResponseEntity<?> createMonitoring(@Valid @RequestBody MonitoringRequest request) {
 		if (!employeeRepository.existsById(request.getReceptionistId())) {
